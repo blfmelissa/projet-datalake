@@ -1,0 +1,246 @@
+import csv
+import os
+import re
+
+# == ÉTAPE 1: Définir les chemins des fichiers ==
+chemin_fichier_entree = r'C:\TD_DATALAKE\projet-datalake\TD_DATALAKE\DATALAKE\99_METADATA\metadata_descriptive.csv'
+
+nom_fichier_societes = 'societes.csv'
+nom_fichier_emplois = 'emplois.csv'
+nom_fichier_avis = 'avis.csv'  # nouveau fichier pour les avis
+
+# == NOUVELLE FONCTION : parser une chaîne de lieu en composantes ==
+def parse_location(raw):
+    """
+    Retourne un dict avec keys: city, postal_code, region, country.
+    Valeurs vides ('') quand manquantes.
+    """
+    if not raw:
+        return {'city': '', 'postal_code': '', 'region': '', 'country': ''}
+
+    s = raw.strip()
+    s = s.replace('Île-de-France', 'Île-de-France')
+    parts = [p.strip() for p in s.split(',') if p.strip()]
+
+    def is_postal_token(tok):
+        return bool(re.match(r'^\d{2,5}$', tok))
+
+    postal = ''
+    city = ''
+    region = ''
+    country = ''
+
+    if len(parts) == 1:
+        token = parts[0]
+        m = re.match(r'^(\d{2,5})\s+(.*)$', token)
+        if m:
+            postal = m.group(1)
+            city = m.group(2)
+        elif is_postal_token(token):
+            postal = token
+        else:
+            city = token
+    else:
+        if is_postal_token(parts[0]):
+            postal = parts[0]
+            city = parts[1] if len(parts) > 1 else ''
+            region = parts[2] if len(parts) > 2 else ''
+            country = parts[3] if len(parts) > 3 else ''
+        else:
+            possible_country = parts[-1]
+            if possible_country.upper() in ('FR', 'FRA') or 'FRANCE' in possible_country.upper() or len(parts) == 2:
+                country = possible_country if len(parts) >= 2 else ''
+                if len(parts) == 2:
+                    city = parts[0]
+                elif len(parts) == 3:
+                    city = parts[0]
+                    region = parts[1]
+                else:
+                    city = parts[0]
+                    region = ', '.join(parts[1:-1]) if len(parts) > 2 else ''
+            else:
+                city = parts[0]
+                region = parts[1] if len(parts) > 1 else ''
+                country = parts[-1] if len(parts) > 2 else ''
+
+    return {
+        'city': city or '',
+        'postal_code': postal or '',
+        'region': region or '',
+        'country': country or ''
+    }
+
+# == ÉTAPE 2: Lire le fichier source et pivoter les données ==
+offres_emploi_pivot = {}
+
+print(f"Lecture du fichier source : {chemin_fichier_entree}")
+
+try:
+    with open(chemin_fichier_entree, mode='r', encoding='utf-8') as fichier_source:
+        lecteur_csv = csv.reader(fichier_source, delimiter=';')
+        
+        for ligne in lecteur_csv:
+            if len(ligne) == 3:
+                cle_str, colonne, valeur = [part.strip() for part in ligne]
+                
+                try:
+                    cle_originale = int(cle_str)
+                    if cle_originale not in offres_emploi_pivot:
+                        offres_emploi_pivot[cle_originale] = {}
+                    offres_emploi_pivot[cle_originale][colonne] = valeur
+                except ValueError:
+                    # clé non numérique -> ignorer
+                    pass
+            else:
+                # ligne malformée -> ignorer
+                pass
+
+except FileNotFoundError:
+    print(f"ERREUR : Le fichier '{chemin_fichier_entree}' est introuvable.")
+    print("Veuillez vérifier que le chemin est correct et que le fichier existe.")
+    exit() # Arrête le script si le fichier n'existe pas
+
+
+# == ÉTAPE 3: Préparer les listes pour les tables (sociétés, emplois, avis) ==
+liste_societes = []
+liste_emplois = []
+liste_avis = []  # nouvelle liste pour les avis
+
+societes_ajoutees = {}
+societe_id_compteur = 1
+emploi_id_compteur = 1
+avis_id_compteur = 1
+
+print("Traitement des données pour générer les fichiers CSV...")
+
+def clean_value(v):
+    """Nettoie une valeur : gère None, strip, et 'NULL'."""
+    if v is None:
+        return ''
+    s = v.strip()
+    return '' if s.upper() == 'NULL' else s
+
+for offre_data in offres_emploi_pivot.values():
+    
+    # --------------------------
+    # 1. SOCIETES
+    # --------------------------
+    
+    # Gère 'nomSociete' ou 'nomEntreprise' comme fallback
+    nom_societe = offre_data.get('nomSociete') or offre_data.get('nomEntreprise') or ''
+    if not nom_societe:
+        continue # Pas de nom de société, on ne peut rien faire, on ignore cette entrée
+
+    # Utilise 'villeEmploi' comme source pour la localisation de la société
+    loc = parse_location(offre_data.get('villeEmploi'))
+
+    if nom_societe not in societes_ajoutees:
+        current_societe_id = societe_id_compteur
+        societes_ajoutees[nom_societe] = current_societe_id
+
+        liste_societes.append({
+            'idsociete': current_societe_id,
+            'nomsociete': nom_societe,
+            'villeSociete': loc['city'],
+            'codePostalSociete': loc['postal_code'],
+            'regionSociete': loc['region'],
+            'paysSociete': loc['country']
+        })
+        societe_id_compteur += 1
+    else:
+        current_societe_id = societes_ajoutees[nom_societe]
+
+    # --------------------------
+    # 2. EMPLOIS  (CORRIGÉ)
+    # --------------------------
+    
+    # On ne crée un emploi QUE s'il y a un libellé d'emploi
+    libelle_emploi_nettoye = clean_value(offre_data.get('libelleEmploi'))
+    
+    if libelle_emploi_nettoye:  # Vérifie si le libellé n'est pas vide
+        loc_emploi = parse_location(offre_data.get('villeEmploi'))
+        
+        liste_emplois.append({
+            'idemploi': emploi_id_compteur,
+            'libelleEmploi': libelle_emploi_nettoye, # Réutiliser la valeur déjà nettoyée
+            'villeEmploi': loc_emploi['city'],
+            'codePostalEmploi': loc_emploi['postal_code'],
+            'regionEmploi': loc_emploi['region'],
+            'paysEmploi': loc_emploi['country'],
+            'descriptifemploi': clean_value(offre_data.get('Descriptif')),
+            'idsociete': current_societe_id
+        })
+        emploi_id_compteur += 1
+    
+    # S'il n'y a pas de libellé (libelle_emploi_nettoye est vide),
+    # le script ignore simplement ce bloc et passe directement 
+    # à la section 3 (AVIS) sans créer de ligne "emploi" vide.
+
+    # --------------------------
+    # 3. AVIS
+    # --------------------------
+    
+    # Récupérer la note moyenne une seule fois
+    note_moyenne = clean_value(offre_data.get('noteMoyEntreprise'))
+
+    # Itérer pour trouver tous les avis de avis1 à avis10
+    for i in range(1, 11):
+        key_lib = f'avis{i}_lib'
+        key_comment = f'avis{i}_commentaire'
+        key_avantages = f'avis{i}_avantages'
+        key_inconv = f'avis{i}_inconvenients'
+
+        titre_avis = clean_value(offre_data.get(key_lib))
+        description_avis = clean_value(offre_data.get(key_comment))
+        avantage_avis = clean_value(offre_data.get(key_avantages))
+        inconvenient_avis = clean_value(offre_data.get(key_inconv))
+
+        # Créer une ligne d'avis seulement si au moins un champ est rempli
+        if any([titre_avis, description_avis, avantage_avis, inconvenient_avis, note_moyenne]):
+            
+            # Cas spécial : si on a *seulement* la note mais aucun autre champ d'avis,
+            # on ne crée pas d'entrée pour les avis 2 à 10.
+            if i > 1 and not any([titre_avis, description_avis, avantage_avis, inconvenient_avis]):
+                break # Arrête de chercher avis2, avis3... s'ils sont vides
+            
+            liste_avis.append({
+                'idavis': avis_id_compteur,
+                'idsociete': current_societe_id,
+                'titreAvis': titre_avis,
+                'descriptionAvis': description_avis,
+                'avantageAvis': avantage_avis,
+                'inconvenientAvis': inconvenient_avis,
+                'noteMoyenneAvis': note_moyenne
+            })
+            avis_id_compteur += 1
+            
+            # Si on a créé un avis pour la note seule, on ne veut pas le refaire 10x
+            if not any([titre_avis, description_avis, avantage_avis, inconvenient_avis]):
+                 break # Arrête la boucle 'for i...'
+
+
+# == ÉTAPE 4: Écrire les listes dans des fichiers CSV ==
+
+# --- Écriture sociétés ---
+headers_societe = ['idsociete', 'nomsociete', 'villeSociete', 'codePostalSociete', 'regionSociete', 'paysSociete']
+with open(nom_fichier_societes, 'w', newline='', encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=headers_societe, delimiter=';')
+    writer.writeheader()
+    writer.writerows(liste_societes)
+print(f"✅ Fichier '{os.path.abspath(nom_fichier_societes)}' créé avec {len(liste_societes)} sociétés.")
+
+# --- Écriture emplois ---
+headers_emploi = ['idemploi', 'libelleEmploi', 'villeEmploi', 'codePostalEmploi', 'regionEmploi', 'paysEmploi', 'descriptifemploi', 'idsociete']
+with open(nom_fichier_emplois, 'w', newline='', encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=headers_emploi, delimiter=';')
+    writer.writeheader()
+    writer.writerows(liste_emplois)
+print(f"✅ Fichier '{os.path.abspath(nom_fichier_emplois)}' créé avec {len(liste_emplois)} offres d'emploi.")
+
+# --- Écriture avis ---
+headers_avis = ['idavis', 'idsociete', 'titreAvis', 'descriptionAvis', 'avantageAvis', 'inconvenientAvis', 'noteMoyenneAvis']
+with open(nom_fichier_avis, 'w', newline='', encoding='utf-8') as f:
+    writer = csv.DictWriter(f, fieldnames=headers_avis, delimiter=';')
+    writer.writeheader()
+    writer.writerows(liste_avis)
+print(f"✅ Fichier '{os.path.abspath(nom_fichier_avis)}' créé avec {len(liste_avis)} avis.")
