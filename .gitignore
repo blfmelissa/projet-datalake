@@ -31,16 +31,14 @@ TD_DATALAKE/DATALAKE/1_LANDING_ZONE/**/*.html
 # Curated Zone (métadonnées descriptives)
 TD_DATALAKE/DATALAKE/2_CURATED_ZONE/**/*.csv
 
+# Production Zone (CSV finaux)
 TD_DATALAKE/DATALAKE/3_PRODUCTION_ZONE/*.csv
 
+# Métadonnées techniques
 TD_DATALAKE/DATALAKE/99_METADATA/*.csv
 
-!TD_DATALAKE/DATALAKE/0_SOURCE_WEB/.gitkeep
-!TD_DATALAKE/DATALAKE/1_LANDING_ZONE/**/.gitkeep
-!TD_DATALAKE/DATALAKE/2_CURATED_ZONE/**/.gitkeep
-!TD_DATALAKE/DATALAKE/3_PRODUCTION_ZONE/.gitkeep
-!TD_DATALAKE/DATALAKE/99_METADATA/.gitkeep
-
+# Conserver la structure des dossiers et seed_data.sql
+!**/.gitkeep
 !TD_DATALAKE/DATALAKE/3_PRODUCTION_ZONE/seed_data.sql
 
 # Logs
