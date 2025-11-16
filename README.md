@@ -83,6 +83,14 @@ python Datalake_Programme_Principal.py 2  # Lance uniquement la phase 2
 python Datalake_Programme_Principal.py 3  # Lance uniquement la phase 3
 ```
 
+**Ou lancer les scripts directement** :
+```bash
+cd TD_DATALAKE/DVLP/PYTHON
+python Datalake_Phase1_Ingestion.py
+python Datalake_Phase2_Extraction.py
+python Datalake_Phase3_Transformation_ETL.py
+```
+
 ## 📊 Modèle de données
 
 ### Tables produites (3_PRODUCTION_ZONE)
@@ -117,7 +125,7 @@ Datalake_Parametrage.py              # Configuration centralisée (chemins, cons
 Datalake_Phase1_Ingestion.py         # Phase 1 : Ingestion vers Landing Zone
 Datalake_Phase2_Extraction.py        # Phase 2 : Parsing HTML et extraction
 Datalake_Phase3_Transformation_ETL.py # Phase 3 : ETL vers Production
-Datalake_Programme_Principal.py      # Orchestrateur du pipeline
+Datalake_Programme_Principal.py      # Orchestrateur du pipeline (lance les 3 phases)
 ```
 
 ## 📝 Métadonnées
