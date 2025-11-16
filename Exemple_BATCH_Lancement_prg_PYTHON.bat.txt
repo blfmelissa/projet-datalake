@@ -1,3 +1,0 @@
-cls
-C:\ProgramData\Anaconda3\python  "C:\TD_DATALAKE\DVLP\Exemple_programme_PYTHON_pour_lancement_en_ligne_de_commande.py"
-pause

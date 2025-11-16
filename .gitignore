@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environnements virtuels
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Données sources (ne pas versionner les données brutes)
+TD_DATALAKE/DATALAKE/0_SOURCE_WEB/*.html
+
+# Landing Zone (données ingérées)
+TD_DATALAKE/DATALAKE/1_LANDING_ZONE/**/*.html
+
+# Curated Zone (métadonnées descriptives)
+TD_DATALAKE/DATALAKE/2_CURATED_ZONE/**/*.csv
+
+# Production Zone (CSV finaux)
+TD_DATALAKE/DATALAKE/3_PRODUCTION_ZONE/*.csv
+
+# Métadonnées techniques
+TD_DATALAKE/DATALAKE/99_METADATA/*.csv
+
+# Conserver la structure des dossiers et seed_data.sql
+!**/.gitkeep
+!TD_DATALAKE/DATALAKE/3_PRODUCTION_ZONE/seed_data.sql
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Système
+Thumbs.db
+

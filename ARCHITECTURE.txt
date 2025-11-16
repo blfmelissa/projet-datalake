@@ -1,0 +1,186 @@
+================================================================================
+                    ARCHITECTURE DU DATA LAKEHOUSE
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          PIPELINE GLOBAL                                  │
+└──────────────────────────────────────────────────────────────────────────┘
+
+   ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+   │   PHASE 1   │ ───▶ │   PHASE 2   │ ───▶ │   PHASE 3   │
+   │  INGESTION  │      │ EXTRACTION  │      │     ETL     │
+   └─────────────┘      └─────────────┘      └─────────────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+   LANDING ZONE          CURATED ZONE          PRODUCTION (prêt pour BI)
+
+
+================================================================================
+                         ZONES DU DATA LAKEHOUSE
+================================================================================
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│                         0_SOURCE_WEB (Données brutes)                       │
+│                                                                             │
+│  📁 603 fichiers HTML sources                                               │
+│     ├─ INFO-EMP-LINKEDIN-*.html       (254 fichiers)                       │
+│     ├─ INFO-SOC-GLASSDOOR-*.html      (140 fichiers)                       │
+│     └─ AVIS-SOC-GLASSDOOR-*.html      (209 fichiers)                       │
+│                                                                             │
+│  Statut : READ ONLY - Jamais modifié                                       │
+└────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ PHASE 1 : Ingestion
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                      1_LANDING_ZONE (Zone d'ingestion)                      │
+│                                                                             │
+│  📂 LINKEDIN/                                                               │
+│     └─ EMP/                     → 254 fichiers HTML (emplois)              │
+│                                                                             │
+│  📂 GLASSDOOR/                                                              │
+│     ├─ SOC/                     → 140 fichiers HTML (entreprises)          │
+│     └─ AVI/                     → 209 fichiers HTML (avis)                 │
+│                                                                             │
+│  📄 Métadonnées techniques :                                                │
+│     └─ 99_METADATA/metadata_technique.csv                                  │
+│        Format : cle_unique | colonne | valeur                              │
+│        Contenu : date_recuperation, nom_fichier, chemins, categorie        │
+│                                                                             │
+│  Statut : Copie à l'identique + traçabilité                                │
+└────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ PHASE 2 : Extraction + Parsing HTML
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                   2_CURATED_ZONE (Données nettoyées)                        │
+│                                                                             │
+│  📂 METADONNEES/                                                            │
+│     └─ metadata_descriptive.csv                                            │
+│        Format : cle_unique | colonne | valeur                              │
+│                                                                             │
+│  Données extraites (format vertical) :                                     │
+│    • LINKEDIN/EMP :                                                         │
+│       - nomSociete, villeEmploi, libelleEmploi, Descriptif                 │
+│                                                                             │
+│    • GLASSDOOR/SOC :                                                        │
+│       - nomEntreprise, villeEntreprise, tailleEntreprise, description      │
+│                                                                             │
+│    • GLASSDOOR/AVI :                                                        │
+│       - nomEntreprise, noteMoyEntreprise                                   │
+│       - avisN_lib, avisN_commentaire, avisN_avantages, avisN_inconvenients │
+│                                                                             │
+│  Statut : Données brutes → Données structurées (texte)                     │
+└────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ PHASE 3 : Transformation ETL
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                 3_PRODUCTION_ZONE (Données relationnelles)                  │
+│                                                                             │
+│  📊 Fichiers CSV (format relationnel) :                                    │
+│                                                                             │
+│  📄 societes.csv                                                            │
+│     Colonnes : idsociete | nomsociete | villeSociete | codePostalSociete   │
+│                regionSociete | paysSociete                                 │
+│     Traitement : Dédoublonnage + normalisation (minuscules, sans accents)  │
+│                                                                             │
+│  📄 emplois.csv                                                             │
+│     Colonnes : idemploi | libelleEmploi | villeEmploi | codePostalEmploi   │
+│                regionEmploi | paysEmploi | descriptifemploi | idsociete    │
+│     Traitement : Normalisation des lieux + FK vers societes                │
+│                                                                             │
+│  📄 avis.csv                                                                │
+│     Colonnes : idavis | idsociete | titreAvis | descriptionAvis            │
+│                avantageAvis | inconvenientAvis | noteMoyenneAvis           │
+│     Traitement : 1 ligne par avis + FK vers societes                       │
+│                                                                             │
+│  📄 seed_data.sql                                                           │
+│     Schéma PostgreSQL : CREATE TABLE + procédures stockées                 │
+│                                                                             │
+│  Statut : Prêt pour chargement en base de données OU import dans outil BI  │
+│                                                                             │
+│  📊 DASHBOARD BI (Qlik Sense - Dashboard.pdf)                              │
+│     Charge directement les 3 CSV et effectue les agrégations :            │
+│     • Top 10 sociétés par nombre d'offres                                  │
+│     • Carte géographique (offres par ville + notes moyennes)               │
+│     • Analyse de performance (scatter plot)                                │
+│     • Notes moyennes par société                                           │
+└────────────────────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+                       SCRIPTS D'ORCHESTRATION
+================================================================================
+
+DVLP/
+├─ PYTHON/
+│  │
+│  ├─ Datalake_Parametrage.py              ← Configuration centralisée
+│  │                                          (Chemins, constantes)
+│  │
+│  ├─ Datalake_Phase1_Ingestion.py         ← Phase 1
+│  │   Fonction : ingestion_fichiers_html_vers_landing_zone()
+│  │   Entrée   : 0_SOURCE_WEB/*.html
+│  │   Sortie   : 1_LANDING_ZONE/**/*.html + metadata_technique.csv
+│  │
+│  ├─ Datalake_Phase2_Extraction.py        ← Phase 2
+│  │   Fonction : extraction_donnees_descriptives()
+│  │   Entrée   : 1_LANDING_ZONE + metadata_technique.csv
+│  │   Sortie   : 2_CURATED_ZONE/metadata_descriptive.csv
+│  │
+│  ├─ Datalake_Phase3_Transformation_ETL.py ← Phase 3
+│  │   Fonction : transformation_etl_vers_production()
+│  │   Entrée   : 2_CURATED_ZONE/metadata_descriptive.csv
+│  │   Sortie   : 3_PRODUCTION_ZONE/*.csv (societes, emplois, avis)
+│  │
+│  └─ Datalake_Programme_Principal.py      ← Orchestrateur principal
+│      Fonction : lancer_pipeline_complet()
+│      Usage    : python Datalake_Programme_Principal.py [1|2|3]
+│
+└─ BATCH/
+   │
+   ├─ 00-Lancement_Pipeline_Complet.bat    ← Lance toutes les phases
+   ├─ 01-Phase1_Ingestion.bat              ← Lance Phase 1 uniquement
+   ├─ 02-Phase2_Extraction.bat             ← Lance Phase 2 uniquement
+   └─ 03-Phase3_Transformation_ETL.bat     ← Lance Phase 3 uniquement
+
+
+================================================================================
+                            FLUX DE DONNÉES
+================================================================================
+
+HTML (603 fichiers)
+    │
+    │ [Phase 1] Copie + Tri
+    ▼
+LANDING_ZONE (603 fichiers HTML triés)
+    │  + metadata_technique.csv (format vertical)
+    │
+    │ [Phase 2] Parsing BeautifulSoup
+    ▼
+CURATED_ZONE (metadata_descriptive.csv)
+    │  Format vertical : cle_unique | colonne | valeur
+    │  Contenu : noms, villes, descriptions, avis
+    │
+    │ [Phase 3] Pivot + Normalisation + Déduplication
+    ▼
+PRODUCTION_ZONE (3 CSV relationnels)
+    │  • societes.csv      (N lignes de sociétés uniques)
+    │  • emplois.csv       (M lignes d'emplois)
+    │  • avis.csv          (P lignes d'avis)
+    │
+    │ Import direct dans outil BI (Qlik Sense)
+    │ Les agrégations sont faites en temps réel
+    ▼
+📊 DASHBOARD QLIK SENSE (Dashboard.pdf)
+    • Top 10 sociétés
+    • Carte géographique
+    • Analyse de performance
+    • Notes par société
+
+
+================================================================================
+                               FIN
+================================================================================
+

@@ -1,0 +1,269 @@
+idsociete;nomsociete;villeSociete;codePostalSociete;regionSociete;paysSociete
+1;Devoteam;;;;
+2;Freelance-info.fr;lyon;;;fr
+3;Groupe PSIH;lyon;;;fr
+4;CELAD;lyon;;;fr
+5;Atos;;;;
+6;Sopra Steria;lyon;;;fr
+7;INTITEK;lyon;;;fr
+8;Atos Consulting;;;;
+9;Adthink;lyon;;;fr
+10;Atos-Syntel;;;;
+11;Groupe SII;lyon;;;fr
+12;Atos Medical;;;;
+13;Feu Vert;ecully;;;fr
+14;Capgemini;lyon area;;;france
+15;Alptis;lyon;;;fr
+16;Université de Bordeaux;gradignan;;;fr
+17;Dassault Systemes;;;;
+18;ADERLY / Invest in Lyon;lyon;;;fr
+19;SolidWorks;;;;
+20;Roamler;lyon;;;fr
+21;MycommunIT;saint maurice sur dargoire;;;fr
+22;Harnham;lille;;;fr
+23;2S2I Solutions & Services;;;;
+24;EOLE Consulting;lyon;;;fr
+25;CEGID;;;;
+26;Axway;lyon;;auvergne rhone alpes;france
+27;Bayer;;;;
+28;Soladis;lyon;;;fr
+29;BIAL-R;lyon;;;fr
+30;Statkraft;lyon;;;fr
+31;HAVANA IT & APPS;lyon;;;fr
+32;SELESCOPE;lyon;;;fr
+33;Fédération hospitalière de France (FHF);lyon;;;fr
+34;Abaka;;;;
+35;Plastic Omnium;sainte julie;;;fr
+36;Expertime;;;;
+37;Carriere-info.fr;lyon;;;fr
+38;Adsearch;;;;
+39;DCS EASYWARE;lyon;;;fr
+40;Groupe Adéquat;;;;
+41;Multimedia France Productions;;;;
+42;Modis;;;;
+43;Kiss The Bride;limonest;;;fr
+44;UK Ministry of Defence;;;;
+45;DTA INGENIERIE MEDITERRANEE;lyon 03;;;fr
+46;BIOASTER;lyon;;auvergne rhone alpes;france
+47;SILKHOM - SMART RECRUITMENT;lyon;;;fr
+48;CNS Communications;saint genis laval;69230;auvergne rhone alpes;france
+49;Business Activ;lyon;;;fr
+50;Smile Group;;;;
+51;Hermitage Solutions Fr;lyon area;;;france
+52;Cegedim;;;;
+53;HUGGA;lyon;;;fr
+54;Groupe Creative;;;;
+55;Robert Half;;;;
+56;ITS;lyon;;;fr
+57;Thales;lyon;;;fr
+58;Everteam;lyon;;;fr
+59;Expectra;lyon 06;;;fr
+60;SoftAtHome;lyon;;;fr
+61;KOBALTT;lyon;;;fr
+62;Lacoste;;;;
+63;Groupe ADAMING;lyon;;;fr
+64;Lacoste Traiteur;;;;
+65;Sept Lieues;lyon;;;fr
+66;CGIAR;;;;
+67;Stambia;lyon;;;fr
+68;Volvo Group;;;;
+69;Inria;lyon;;;fr
+70;Volvo Trucks;;;;
+71;Squadata;lyon;;;fr
+72;Volvo Cars;;;;
+73;FinDiT Consulting;region de paris;;;france
+74;Volvo Construction Equipment;;;;
+75;Osella Technology;paris area;;;france
+76;Volvo Information Technology;;;;
+77;Societe Generale Corporate and Investment Banking - SGCIB;fontenay sous bois;;;fr
+78;Accor;evry;;ile de france;france
+79;Urban Linker;lyon;;;fr
+80;Intrum-fr;saint priest;;;fr
+81;SeLoger;;;;
+82;CNH Industrial;;;;
+83;Adsearch SAS;limonest;;;fr
+84;TLScontact;lyon;;auvergne rhone alpes;france
+85;CNH Industrial Capital;;;;
+86;Micropole;villeurbanne;;;fr
+87;SOTRAVO Filiale SOLOCAL GROUP;;;;
+88;FeuVert;ecully;;;fr
+89;SoLocal Group;;;;
+90;Sanofi;lyon;;;fr
+91;Morgan Philips Group;;;;
+92;Morgan Philips Executive Search;;;;
+93;Montreal Associates;;;;
+94;Cerema;bron;;;fr
+95;STM;;;;
+96;Polytechnique Montréal;;;;
+97;Clustree;paris;;;fr
+98;BMO Financial Group;;;;
+99;PARIS GROUP;paris;;;fr
+100;Concordia University;;;;
+101;LittleBigCode;region de paris;;;france
+102;University of Montreal;;;;
+103;MFG Labs;paris;;ile de france;france
+104;CRIM (Computer Research Institute of Montreal);;;;
+105;C3.ai;paris;;;fr
+106;Eidos Montreal;;;;
+107;NVIDIA;courbevoie;;;fr
+108;Teads.tv;paris;;;fr
+109;Softeam;;;;
+110;VINCI Energies;lyon;;;fr
+111;Fujitsu France;paris area;;;france
+112;ALTRAN;;;;
+113;Euro Protection Surveillance;strasbourg;;alsace;france
+114;ALTRAD Group;;;;
+115;PRIORITIS Market Access;paris;;;
+116;Altran Group;;;;
+117;LMACP;paris 02;;ile de france;france
+118;Altran Engineering Solution;;;;
+119;CACIIS;paris;;;fr
+120;Altran North America;;;;
+121;Groupe SeLoger;region de paris;;;france
+122;Altran Telnet;;;;
+123;Glocomms;paris;;ile de france;france
+124;Datatorii;paris;;ile de france;france
+125;Sephora;;;;
+126;Groupe Crédit Agricole;montrouge;;ile de france;france
+127;LVMH;;;;
+128;Statkraft AS;;;;
+129;La Redoute;roubaix;;nord pas de calais;france
+130;Sparklane;;;;
+131;Openvalue;region de paris;;;france
+132;Manpower;;;;
+133;Openfield;malakoff;;;fr
+134;Artefact;paris;;;fr
+135;ITS Group;;;;
+136;Loria;;;;
+137;ITS Overlap;;;;
+138;Approach People Recruitment;region de paris;;;france
+139;Canon ITS;;;;
+140;D2SI;region de paris;;;france
+141;Aubay France;region de paris;;;france
+142;WOM Recruitment;lyon;;auvergne rhone alpes;france
+143;Sii Poland;;;;
+144;Veolia;lyon;;;fr
+145;Awalee Consulting;region de paris;;;france
+146;Citech;lyon;;;fr
+147;DeciVision;lyon;;;fr
+148;ALTIVIEW;lyon;;;fr
+149;Everwin;lyon;;;fr
+150;AXA en France;departement des hauts de seine;;;fr
+151;DATALAKE;colombes;;;fr
+152;Paris Inn Group;;;;
+153;Alithya;paris;;;fr
+154;Groupe Altice Média;;;;
+155;CALIDA Group;;;;
+156;INGENIANCE;paris;;;fr
+157;Logware;;;;
+158;JEMS;neuilly sur seine;;ile de france;france
+159;Fortuneo SA;;;;
+160;Zenly;paris;;;fr
+161;Phildar;neuville en ferrain;;hauts de france;france
+162;SmartAdServer;paris;;;fr
+163;ADD UP;paris;;;fr
+164;Datadog;paris;;;fr
+165;TSC;paris;75009;ile de france;france
+166;Doctolib;paris;;;fr
+167;Deliveroo;paris;;;fr
+168;Teads;;;;
+169;Criteo;paris;;;fr
+170;Solocal;paris et peripherie;;;
+171;Contentsquare;region de paris;;;france
+172;EXTERNATIC;paris;;;fr
+173;Meritis;bordeaux;;nouvelle aquitaine;france
+174;CELINE;;;;
+175;Fortuneo;region de paris;;;france
+176;Les Echos;;;;
+177;Catalina France;boulogne billancourt;;ile de france;france
+178;Kendo;;;;
+179;Manpower France;paris;;ile de france;france
+180;Smily Rh;lyon 01;;;fr
+181;Sanofi Pasteur;;;;
+182;WiSH RECRUTEMENT;lyon;;;fr
+183;Merial;;;;
+184;Danem People Group - Engineering & Technology Recruitment Specialists;lyon;;;fr
+185;Team Work;lyon;;;fr
+186;Groupe Crédit Agricole du Maroc;;;;
+187;CACIB;;;;
+188;Amiltone;villeurbanne;;;fr
+189;Crédit Agricole d'Ile de France;;;;
+190;Umanis;lyon;;;fr
+191;Crédit Agricole d'Aquitaine;;;;
+192;Astek;lyon;;;fr
+193;Crédit Agricole;;;;
+194;Danem Group;lyon;;;fr
+195;Lectra;;;;
+196;Sopra Steria Recruitment;;;;
+197;Smile Open Source Solutions;region de lyon;;;france
+198;Group Adaming;;;;
+199;alptis assurances;;;;
+200;Octopeek;enghien les bains;;ile de france;france
+201;Gfi world;nantes;;;fr
+202;Baldwin Partners;nantes;;;fr
+203;Mixt Composites Recyclables;;;;
+204;GROUPE M6;neuilly sur seine;;ile de france;france
+205;Astek Group;;;;
+206;Neosoft Solutions Inc;rennes;;;fr
+207;Keyrus Group;;;;
+208;Yongzhi Plastic Electronics (Shenzhen) Co.;;;;
+209;AnotherBrain;paris;;ile de france;france
+210;Thales-Raytheon Systems;;;;
+211;L&T Thales Technology Services;;;;
+212;SKF Groupe;vernon;;;fr
+213;SOFTEAM Group;paris 16;;ile de france;france
+214;JEMS Group;;;;
+215;Keyrus;paris;;ile de france;france
+216;Davidson consulting;lyon;;;fr
+217;Novulys;lyon;;;fr
+218;Capgemini Invent;;;;
+219;Flatchr;lyon;;;fr
+220;2s2i Groupe;montpellier;;;fr
+221;Open;;;;
+222;AVISTO;aix en provence;;;fr
+223;ILYEUM;clichy;;;fr
+224;Open Minds Open Hearts Day Care;;;;
+225;Acadomia;azur;;;fr
+226;GFI Group;montpellier;;;fr
+227;OpenText;;;;
+228;ICSIS;lille;;;fr
+229;Open Sourcing;;;;
+230;GFI;montpellier;;;fr
+231;Artefact Group;;;;
+232;BeMore Holding;aix en provence;;;fr
+233;2S2I;montpellier;;;fr
+234;Artefacts Studio;;;;
+235;rh Studio;lille;;;fr
+236;CEGEDIM SRH;boulogne billancourt;;;fr
+237;CHU de Bordeaux;talence;;;fr
+238;Openfield Live;;;;
+239;TV France International;paris;;;fr
+240;Axande;courbevoie;;;fr
+241;Phaidon International;;;;
+242;Banco Cetelem, BNP Paribas Personal Finance;merignac;;;fr
+243;Sogia Systeme;paris;;;fr
+244;Adthink-Media;;;;
+245;PERFECTSIGHT;puteaux;;;fr
+246;SKF;;;;
+247;Fitae;aix en provence;;;fr
+248;Talea S.r.l.;paris;;;fr
+249;TALEA consult;paris;;;fr
+250;Groupe Apsaroke;marseille;;;fr
+251;Gfi Informatique;;;;
+252;ciorane;paris;;;fr
+253;GFI Software;;;;
+254;aldecis;paris;;;fr
+255;SudOuest RH;paris;;;fr
+256;AKKA Tech;paris;;;fr
+257;ACCEO Solutions;;;;
+258;Asigma;paris;;;fr
+259;Valuetis;paris;;;fr
+260;Eversa;region de paris;;;france
+261;Alteca;paris;;;fr
+262;Blue Talent;region de paris;;;france
+263;BNP Paribas Personal Finance;merignac;;;fr
+264;ibis;;;;
+265;OTV;;;;
+266;Veolia Water Tech;;;;
+267;Groupe NICOLLIN - Groupe VEOLIA;;;;
+268;Transdev;;;;
