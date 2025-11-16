@@ -108,8 +108,6 @@ def parse_location(raw):
 
 offres_emploi_pivot = {}
 
-print(f"Lecture du fichier source : {chemin_fichier_entree}")
-
 try:
     with open(chemin_fichier_entree, mode='r', encoding='utf-8') as fichier_source:
         lecteur_csv = csv.reader(fichier_source, delimiter=';')
@@ -129,8 +127,6 @@ try:
                 pass
 
 except FileNotFoundError:
-    print(f"ERREUR : Le fichier '{chemin_fichier_entree}' est introuvable.")
-    print("Veuillez vérifier que le chemin est correct et que le fichier existe.")
     exit()
 
 
@@ -142,8 +138,6 @@ societes_ajoutees = {}
 societe_id_compteur = 1
 emploi_id_compteur = 1
 avis_id_compteur = 1
-
-print("Traitement des données pour générer les fichiers CSV...")
 
 def clean_value(v):
     """Nettoie une valeur : gère None, strip, et 'NULL'."""
@@ -243,19 +237,16 @@ with open(nom_fichier_societes, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=headers_societe, delimiter=';')
     writer.writeheader()
     writer.writerows(liste_societes)
-print(f"Fichier '{os.path.abspath(nom_fichier_societes)}' créé avec {len(liste_societes)} sociétés.")
 
 headers_emploi = ['idemploi', 'libelleEmploi', 'villeEmploi', 'codePostalEmploi', 'regionEmploi', 'paysEmploi', 'descriptifemploi', 'idsociete']
 with open(nom_fichier_emplois, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=headers_emploi, delimiter=';')
     writer.writeheader()
     writer.writerows(liste_emplois)
-print(f"Fichier '{os.path.abspath(nom_fichier_emplois)}' créé avec {len(liste_emplois)} offres d'emploi.")
 
 headers_avis = ['idavis', 'idsociete', 'titreAvis', 'descriptionAvis', 'avantageAvis', 'inconvenientAvis', 'noteMoyenneAvis']
 with open(nom_fichier_avis, 'w', newline='', encoding='utf-8') as f:
     writer = csv.DictWriter(f, fieldnames=headers_avis, delimiter=';')
     writer.writeheader()
     writer.writerows(liste_avis)
-print(f"Fichier '{os.path.abspath(nom_fichier_avis)}' créé avec {len(liste_avis)} avis.")
 

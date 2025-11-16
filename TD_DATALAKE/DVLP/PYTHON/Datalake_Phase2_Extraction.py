@@ -14,8 +14,6 @@ metadata_path = os.path.join(myPathRoot_METADATA, "metadata_technique.csv")
 
 metadata = pd.read_csv(metadata_path, sep=';', quotechar='"')
 
-print("Fichier de métadonnées chargé avec succès.\n")
-
 grouped = metadata.groupby("cle_unique")
 
 
@@ -261,14 +259,9 @@ for cle, group in grouped:
     localisation = dico.get("localisation_du_fichier_html", "NON TROUVÉE")
     nom_fichier = dico.get("nom_du_fichier_html", "NON TROUVÉ")
 
-    chemin_complet = localisation.replace("/", "\\")
+    chemin_complet = localisation
 
     if "LINKEDIN/EMP" in localisation.upper():
-
-        print(f"\nClé unique : {cle}")
-        print(f"Nom du fichier : {nom_fichier}")
-        print(f"Localisation complète : {chemin_complet}")
-        print("-" * 80)
 
         try:
             with open(chemin_complet, "r", encoding="utf-8") as f:
@@ -288,25 +281,11 @@ for cle, group in grouped:
             donnees_extraites.append({"cle_unique": cle, "colonne": "Descriptif", "valeur": texte})
             #donnees_extraites.append({"cle_unique": cle, "colonne": "localisation", "valeur": localisation})
 
-            print('=' * 80)
-            print(f"INFO EMP LINKEDIN - nom de la société ==> {entreprise}")
-            # print(f"INFO EMP LINKEDIN - ville de l'emploi ==> {ville}")
-            # print(f"INFO EMP LINKEDIN - libellé de l'emploi ==> {libelle}")
-            # print('-' * 80)
-            # print(f"INFO EMP LINKEDIN - texte descriptif ==> \n{texte[:300]}...")
-            # print('=' * 80)
         except FileNotFoundError:
-            print("Fichier introuvable :", chemin_complet)
-            print('=' * 80)
+            pass
         except Exception as e:
-            print("Erreur lors du traitement :", e)
-            print('=' * 80)
+            pass
     elif "GLASSDOOR/SOC" in localisation.upper() :
-
-        print(f"\nClé unique : {cle}")
-        print(f"Nom du fichier : {nom_fichier}")
-        print(f"Localisation complète : {chemin_complet}")
-        print("-" * 80)
 
         try:
             with open(chemin_complet, "r", encoding="utf-8") as f:
@@ -325,26 +304,12 @@ for cle, group in grouped:
             donnees_extraites.append({"cle_unique": cle, "colonne": "tailleEntreprise", "valeur": taille})
             donnees_extraites.append({"cle_unique": cle, "colonne": "description", "valeur": description})
 
-            print('=' * 80)
-            print(f"INFO SOC GLASSDOOR - nom de l'entreprise ==> {nom}")
-            print(f"INFO SOC GLASSDOOR - ville de l'entreprise ==> {ville}")
-            print(f"INFO SOC GLASSDOOR - taille de l'entreprise ==> {taille}")
-            print('-' * 80)
-            print(f"INFO SOC GLASSDOOR - descriptition ==> \n{description[:300]}...")
-            print('=' * 80)
-
         except FileNotFoundError:
-            print("Fichier introuvable :", chemin_complet)
-            print('=' * 80)
+            pass
         except Exception as e:
-            print("Erreur lors du traitement :", e)
-            print('=' * 80)
+            pass
 
     elif "GLASSDOOR/AVI" in localisation.upper():
-        print(f"\nClé unique : {cle}")
-        print(f"Nom du fichier : {nom_fichier}")
-        print(f"Localisation complète : {chemin_complet}")
-        print("-" * 80)
 
         try:
             with open(chemin_complet, "r", encoding="utf-8") as f:
@@ -370,27 +335,11 @@ for cle, group in grouped:
                     donnees_extraites.append({"cle_unique": cle, "colonne": f"avis{k}_commentaire", "valeur": avis[5]})
                     donnees_extraites.append({"cle_unique": cle, "colonne": f"avis{k}_avantages", "valeur": avis[6]})
                     donnees_extraites.append({"cle_unique": cle, "colonne": f"avis{k}_inconvenients", "valeur": avis[7]})
-                if k <= 3:
-                    print(f"--- Avis {k} ---")
-                    print(f"  Titre: {avis[2][:70]}...")
-                    print(f"  Commentaire: {avis[5][:70]}...")
-                    print(f"  Avantages: {avis[6][:70]}...")
-                    print(f"  Inconvénients: {avis[7][:70]}...")
-
-            print('=' * 80)
-            print(f"INFO AVI GLASSDOOR - nom de l'entreprise ==> {nom}")
-            print(f"INFO AVI GLASSDOOR - note moyenne de l'entreprise ==> {note_moyenne}")
-            print('-' * 80)
-            print(f"INFO AVI GLASSDOOR - nb d'avis sur l'entreprise ==> {len(liste_avis)}")
-
-            print('=' * 80)
 
         except FileNotFoundError:
-            print("Fichier introuvable :", chemin_complet)
-            print('=' * 80)
+            pass
         except Exception as e:
-            print("Erreur lors du traitement :", e)
-            print('=' * 80)
+            pass
 
     else :
         continue
@@ -405,7 +354,4 @@ output_path = os.path.join(myPathRoot_CURRATEDZONE, "METADONNEES", "metadata_des
 df_resultats = pd.DataFrame(donnees_extraites)
 
 df_resultats.to_csv(output_path, sep=';', index=False, encoding='utf-8-sig')
-
-print("\nExtraction terminée avec succès !")
-print(f"Fichier sauvegardé ici : {output_path}")
 

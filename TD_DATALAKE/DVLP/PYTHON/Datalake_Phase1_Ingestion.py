@@ -22,8 +22,6 @@ rows.append(["cle_unique", "colonne", "valeur"])
 
 cle_unique = 0
 
-print("******** Début de copie des fichiers ********")
-
 for myFileName in myListOfFileSourceTmp:
     src_file = os.path.join(myPathRoot_DATASOURCE, myFileName)
     if "LINKEDIN" in myFileName:
@@ -50,11 +48,7 @@ for myFileName in myListOfFileSourceTmp:
 
     cle_unique += 1
 
-    print(f"Copie du fichier : {src_file} -- vers --> {dst_file}")
-
 with open(meta_full_path, "w", newline='', encoding="utf-8") as csvfile:
     writer = csv.writer(csvfile, delimiter=';', quotechar='"', quoting=csv.QUOTE_ALL)
     writer.writerows(rows)
-
-print("******** Fin de copie des fichiers ********")
 
