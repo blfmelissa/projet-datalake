@@ -282,9 +282,9 @@ for cle, group in grouped:
             #donnees_extraites.append({"cle_unique": cle, "colonne": "localisation", "valeur": localisation})
 
         except FileNotFoundError:
-            pass
+            print(f"ERREUR : Fichier introuvable - {nom_fichier}")
         except Exception as e:
-            pass
+            print(f"ERREUR : {e}")
     elif "GLASSDOOR/SOC" in localisation.upper() :
 
         try:
@@ -305,9 +305,9 @@ for cle, group in grouped:
             donnees_extraites.append({"cle_unique": cle, "colonne": "description", "valeur": description})
 
         except FileNotFoundError:
-            pass
+            print(f"ERREUR : Fichier introuvable - {nom_fichier}")
         except Exception as e:
-            pass
+            print(f"ERREUR : {e}")
 
     elif "GLASSDOOR/AVI" in localisation.upper():
 
@@ -337,9 +337,9 @@ for cle, group in grouped:
                     donnees_extraites.append({"cle_unique": cle, "colonne": f"avis{k}_inconvenients", "valeur": avis[7]})
 
         except FileNotFoundError:
-            pass
+            print(f"ERREUR : Fichier introuvable - {nom_fichier}")
         except Exception as e:
-            pass
+            print(f"ERREUR : {e}")
 
     else :
         continue
